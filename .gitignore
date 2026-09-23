@@ -4,7 +4,10 @@ __pycache__/
 venv/
 .env
 *.mmdb
+*.session
 xray
 xray.exe
 .pytest_cache/
 *.egg-info/
+.serena/
+graphify-out/
