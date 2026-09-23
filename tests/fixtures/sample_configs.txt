@@ -1,0 +1,4 @@
+vless://00000000-0000-4000-8000-000000000001@example.com:443?security=tls#demo1
+trojan://fake-password@example.com:443#demo2
+ss://YWVzLTI1Ni1nY206ZmFrZS1wYXNzd29yZA@example.com:8388#demo3
+not-a-config-at-all

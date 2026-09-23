@@ -1,0 +1,89 @@
+name: forwarder
+
+on:
+  schedule:
+    - cron: "0 */3 * * *"  # هر ۳ ساعت یک‌بار (FR-023)
+  workflow_dispatch: {}    # اجرای دستی (FR-022)
+
+concurrency:
+  group: forwarder
+  cancel-in-progress: false  # انحصار برای Idempotency (اصل VIII)
+
+permissions:
+  contents: write  # برای کامیت state/state.json
+
+env:
+  XRAY_VERSION: "v25.9.1"
+  PYTHON_VERSION: "3.12"
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: دریافت کد
+        uses: actions/checkout@v4
+
+      - name: پیش‌پرواز اسرار (بدون چاپ مقدار)
+        run: |
+          if [ -z "${{ secrets.BOT_TOKEN }}" ]; then
+            echo "خطا: BOT_TOKEN در GitHub Secrets تنظیم نشده است." >&2
+            exit 2
+          fi
+          echo "پیش‌پرواز اسرار موفق بود."
+
+      - name: نصب پایتون
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+
+      - name: نصب وابستگی‌ها
+        run: pip install -r requirements.txt
+
+      - name: نصب Xray پین‌شده با راستی‌آزمایی چک‌سام
+        run: |
+          curl -fsSL -o xray.zip \
+            "https://github.com/XTLS/Xray-core/releases/download/${{ env.XRAY_VERSION }}/Xray-linux-64.zip"
+          if curl -fsSL -o xray.zip.dgst \
+            "https://github.com/XTLS/Xray-core/releases/download/${{ env.XRAY_VERSION }}/Xray-linux-64.zip.dgst"; then
+            EXPECTED=$(grep -oE '[0-9a-fA-F]{64}' xray.zip.dgst | head -n1)
+            ACTUAL=$(sha256sum xray.zip | awk '{print $1}')
+            if [ "$EXPECTED" != "$ACTUAL" ]; then
+              echo "خطا: چک‌سام Xray مطابقت ندارد." >&2
+              exit 1
+            fi
+            echo "چک‌سام Xray تأیید شد."
+          else
+            echo "هشدار: فایل dgst منتشر نشده؛ فقط آزمون نسخه اجرا می‌شود."
+          fi
+          unzip -o xray.zip xray
+          chmod +x xray
+          ./xray version
+          echo "$PWD" >> "$GITHUB_PATH"
+
+      - name: دانلود پایگاه GeoIP (اختیاری)
+        if: ${{ secrets.MAXMIND_LICENSE_KEY != '' }}
+        run: |
+          curl -fsSL -o geoip.tar.gz \
+            "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City&license_key=${{ secrets.MAXMIND_LICENSE_KEY }}&suffix=tar.gz"
+          tar -xzf geoip.tar.gz --wildcards --no-anchored 'GeoLite2-City.mmdb' --strip-components=1
+          ls -la GeoLite2-City.mmdb
+
+      - name: اجرای یک چرخه
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          API_ID: ${{ secrets.API_ID }}
+          API_HASH: ${{ secrets.API_HASH }}
+          SESSION_STRING: ${{ secrets.SESSION_STRING }}
+          MAXMIND_LICENSE_KEY: ${{ secrets.MAXMIND_LICENSE_KEY }}
+        run: python -m src.main --config config.yaml --once
+
+      - name: کامیت وضعیت اجرا
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add state/state.json
+          git diff --quiet --cached && echo "وضعیت بدون تغییر." && exit 0
+          git pull --rebase origin "${GITHUB_REF_NAME:-main}" || true
+          git commit -m "chore: update forwarder state [skip ci]"
+          git push
