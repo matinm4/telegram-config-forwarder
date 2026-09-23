@@ -1,0 +1,49 @@
+# نمونه پیکربندی سامانه جمع‌آوری و انتشار کانفیگ
+# راهنمای کامل هر گزینه: docs/CONFIGURATION.fa.md
+# اسرار (توکن‌ها) هرگز اینجا نوشته نمی‌شوند؛ فقط از متغیر محیطی خوانده می‌شوند.
+version: 1
+schedule:
+  interval_hours: 3
+sources:
+  - id: "src1"
+    username: "example_channel"
+    enabled: true
+    fetch_mode: "auto"      # scrape | telethon | auto
+    proxy: null             # اختیاری، مثل socks5://127.0.0.1:10808
+destinations:
+  - id: "main"
+    chat: "@my_channel"
+    enabled: true
+    sender: "auto"          # bot_api | telethon | auto
+    quarantine: false
+  - id: "quarantine"
+    chat: "@my_quarantine"
+    enabled: true
+    sender: "auto"
+    quarantine: true        # حداکثر یک مقصد قرنطینه فعال
+distribution:
+  strategy: "round_robin"  # round_robin | broadcast | balanced | source_based | per_destination
+filtering:
+  enabled: true
+  rules:
+    - { type: "exact", pattern: "تبلیغات", scope: "both", enabled: true }
+  append_destination_username: true
+location:
+  enabled: true
+  fallback_display: "Unknown"
+testing:
+  enabled: true
+  timeout_s: 15
+  xray_version: "v25.9.1"
+fallback:
+  source_fallback_enabled: true
+  sender_fallback_enabled: true
+  after_failures: 2
+retry:
+  max_attempts: 3
+  backoff_s: [1, 2, 4]
+concurrency:
+  source_limit: 4
+  test_limit: 4
+logging:
+  level: "INFO"

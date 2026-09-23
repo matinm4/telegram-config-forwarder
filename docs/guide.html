@@ -3,189 +3,103 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>راهنمای گام‌به‌گام سامانه جمع‌آوری و انتشار کانفیگ تلگرام</title>
+<title>راهنمای ساده سامانه کانفیگ تلگرام</title>
 <style>
-  :root{
-    --bg:#0f172a; --card:#1e293b; --line:#334155;
-    --txt:#e2e8f0; --mut:#94a3b8; --acc:#38bdf8; --grn:#34d399; --amb:#fbbf24; --red:#f87171;
-  }
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--txt);
-    font-family:Tahoma,'Segoe UI',Arial,sans-serif;line-height:2}
-  header{background:linear-gradient(135deg,#0ea5e9,#6366f1 60%,#a855f7);
-    padding:56px 24px;text-align:center}
-  header h1{margin:0;font-size:2rem}
-  header p{margin:8px 0 0;color:#e0e7ff}
-  .badges{margin-top:16px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
-  .badge{background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.25);
-    border-radius:999px;padding:4px 14px;font-size:.85rem}
-  nav{position:sticky;top:0;background:#0b1220;border-bottom:1px solid var(--line);
-    padding:10px 16px;z-index:10;overflow-x:auto;white-space:nowrap}
-  nav a{color:var(--acc);text-decoration:none;margin-left:16px;font-size:.9rem}
-  main{max-width:900px;margin:0 auto;padding:24px 16px 80px}
-  section{background:var(--card);border:1px solid var(--line);border-radius:16px;
-    padding:24px;margin:20px 0}
-  section h2{margin-top:0;color:var(--acc);font-size:1.3rem}
-  .step{display:flex;gap:12px;align-items:flex-start;margin:14px 0;
-    background:#0b1220;border:1px solid var(--line);border-radius:12px;padding:14px}
-  .num{flex:0 0 36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#0ea5e9,#6366f1);
-    display:flex;align-items:center;justify-content:center;font-weight:bold}
-  code{direction:ltr;display:inline-block;background:#020617;border:1px solid var(--line);
-    border-radius:6px;padding:1px 8px;font-family:Consolas,monospace;font-size:.88rem}
-  pre{direction:ltr;text-align:left;background:#020617;border:1px solid var(--line);
-    border-radius:12px;padding:14px;overflow-x:auto;font-size:.85rem}
+  body{margin:0;background:#0f172a;color:#e2e8f0;
+    font-family:Tahoma,'Segoe UI',Arial,sans-serif;line-height:2.1}
+  header{background:linear-gradient(135deg,#0ea5e9,#6366f1);
+    padding:44px 20px;text-align:center}
+  header h1{margin:0;font-size:1.6rem}
+  header p{margin:6px 0 0;color:#e0e7ff}
+  main{max-width:720px;margin:0 auto;padding:20px 14px 70px}
+  section{background:#1e293b;border:1px solid #334155;border-radius:16px;
+    padding:22px;margin:16px 0}
+  section h2{margin-top:0;color:#38bdf8;font-size:1.2rem}
+  .clicks{background:#0b1220;border:1px solid #334155;border-radius:12px;
+    padding:12px 16px;margin:10px 0}
+  .clicks b{color:#34d399}
+  code{direction:ltr;display:inline-block;background:#020617;
+    border:1px solid #334155;border-radius:6px;padding:1px 8px;
+    font-family:Consolas,monospace;font-size:.88rem}
   table{width:100%;border-collapse:collapse;font-size:.9rem}
-  th,td{border:1px solid var(--line);padding:8px 10px;text-align:right}
-  th{background:#0b1220;color:var(--acc)}
-  .ok{color:var(--grn)} .warn{color:var(--amb)} .bad{color:var(--red)}
-  .tip{border-right:4px solid var(--grn);background:#052e22;padding:10px 14px;border-radius:8px;margin:12px 0}
-  .warnbox{border-right:4px solid var(--amb);background:#3a2a05;padding:10px 14px;border-radius:8px;margin:12px 0}
-  footer{text-align:center;color:var(--mut);padding:24px;font-size:.85rem}
-  a{color:var(--acc)}
+  th,td{border:1px solid #334155;padding:8px;text-align:right}
+  th{background:#0b1220;color:#38bdf8}
+  .note{border-right:4px solid #34d399;background:#052e22;
+    padding:8px 14px;border-radius:8px;margin:10px 0}
+  footer{text-align:center;color:#94a3b8;padding:20px;font-size:.85rem}
 </style>
 </head>
 <body>
 
 <header>
-  <h1>🚀 راهنمای گام‌به‌گام سامانه جمع‌آوری و انتشار کانفیگ تلگرام</h1>
-  <p>از نصب محلی تا اجرای خودکار هر ۳ ساعت در GitHub Actions</p>
-  <div class="badges">
-    <span class="badge">۷۴ وظیفه تکمیل‌شده</span>
-    <span class="badge">۸۲ آزمون سبز</span>
-    <span class="badge">Python 3.12+</span>
-    <span class="badge">وضعیت: Converged ✅</span>
-  </div>
+  <h1>🚀 راهنمای ساده سامانه کانفیگ تلگرام</h1>
+  <p>فقط ۵ قدم — همه کارها با مرورگر، بدون دستور</p>
 </header>
-
-<nav>
-  <a href="#s0">نقشه راه</a><a href="#s1">پیش‌نیازها</a><a href="#s2">نصب</a>
-  <a href="#s3">پیکربندی</a><a href="#s4">اسرار</a><a href="#s5">اجرای آزمایشی</a>
-  <a href="#s6">پوش به گیت‌هاب</a><a href="#s7">فعال‌سازی Actions</a>
-  <a href="#s8">مشاهده نتایج</a><a href="#s9">توسعه</a><a href="#s10">عیب‌یابی</a>
-</nav>
 
 <main>
 
-<section id="s0">
-  <h2>🗺️ نقشه راه</h2>
-  <div class="step"><div class="num">۱</div><div>نصب و اجرای محلی (گام‌های ۱ تا ۵)</div></div>
-  <div class="step"><div class="num">۲</div><div>انتشار در گیت‌هاب و روشن کردن اجرای خودکار (گام‌های ۶ و ۷)</div></div>
-  <div class="step"><div class="num">۳</div><div>پایش نتایج و افزودن منبع/مقصد جدید (گام‌های ۸ و ۹)</div></div>
+<section>
+  <h2>قدم ۱ — پروژه را به گیت‌هاب بفرست (فقط یک‌بار)</h2>
+  <p>این قدم را هر جا اینترنت آزاد داری انجام بده. بعد از آن دیگر لازم نیست.</p>
+  <div class="clicks">در سایت github.com یک مخزن عمومی جدید بساز، بعد در پوشه پروژه:</div>
+  <code>git remote add origin &lt;YOUR-REPO-URL&gt;</code><br><br>
+  <code>git push -u origin main</code>
 </section>
 
-<section id="s1">
-  <h2>📦 گام ۱ — پیش‌نیازها</h2>
+<section>
+  <h2>قدم ۲ — توکن ربات را وارد کن (فقط یک‌بار)</h2>
+  <div class="clicks">
+    <b>۱.</b> از <code>@BotFather</code> در تلگرام توکن بگیر<br>
+    <b>۲.</b> ربات را در کانال‌های مقصد <b>ادمین</b> کن<br>
+    <b>۳.</b> در صفحه مخزن برو به:<br>
+    <b>Settings → Secrets → Actions → New secret</b><br>
+    اسم: <code>BOT_TOKEN</code> — مقدار: توکن ربات
+  </div>
+</section>
+
+<section>
+  <h2>قدم ۳ — کانال‌هایت را معرفی کن (تو سایت گیت‌هاب!)</h2>
+  <div class="clicks">
+    <b>۱.</b> در صفحه مخزن روی فایل <code>config.yaml</code> کلیک کن<br>
+    <b>۲.</b> دکمه <b>✏️ (مداد / Edit)</b> بالای فایل را بزن<br>
+    <b>۳.</b> نام کانال منبع و مقصد خودت را جایگزین مقادیر نمونه کن:<br>
+    <code>username: "example_channel"</code> ← کانال منبع تو<br>
+    <code>chat: "@my_channel"</code> ← کانال مقصد تو<br>
+    <b>۴.</b> دکمه سبز <b>Commit changes</b> را بزن — تمام!
+  </div>
+  <div class="note">💡 از این به بعد هر تغییری (منبع جدید، مقصد جدید، خاموش/روشن کردن تست) را همین‌جا با دکمه مداد انجام بده. از اجرای بعدی خودکار اعمال می‌شود.</div>
+</section>
+
+<section>
+  <h2>قدم ۴ — اولین اجرا را دستی بزن</h2>
+  <div class="clicks">
+    در صفحه مخزن برو به تب <b>Actions</b> ← از لیست سمت چپ <b>forwarder</b> ← دکمه <b>Run workflow</b> ← <b>Run workflow</b>
+  </div>
+  <p>بعد از ۲-۳ دقیقه نتیجه را در کانال مقصدت ببین. از اینجا به بعد سیستم خودش <b>هر ۳ ساعت</b> اجرا می‌شود.</p>
+</section>
+
+<section>
+  <h2>قدم ۵ — نتیجه را ببین</h2>
   <table>
-    <tr><th>نیاز</th><th>توضیح</th></tr>
-    <tr><td>Python 3.12 یا بالاتر</td><td><code>python --version</code></td></tr>
-    <tr><td>Git</td><td><code>git --version</code></td></tr>
-    <tr><td>حساب GitHub</td><td>برای Actions و نگهداری وضعیت</td></tr>
-    <tr><td>توکن ربات (<code>BOT_TOKEN</code>)</td><td>از <code>@BotFather</code> در تلگرام بگیرید؛ ربات باید در کانال‌های مقصد ادمین باشد</td></tr>
-    <tr><td>یک کانال منبع عمومی + دو کانال مقصد آزمایشی</td><td>برای تست اول، واقعی نباشند بهتر است</td></tr>
-  </table>
-  <div class="tip">💡 برای مسیر دوم (Telethon) به <code>API_ID</code> ،<code>API_HASH</code> و <code>SESSION_STRING</code> از my.telegram.org نیاز دارید — اختیاری است.</div>
-</section>
-
-<section id="s2">
-  <h2>⬇️ گام ۲ — نصب</h2>
-<pre>git clone &lt;YOUR-REPO-URL&gt;
-cd my-project
-python -m venv .venv
-# ویندوز:
-.venv\Scripts\activate
-# لینوکس/مک:
-# source .venv/bin/activate
-pip install -r requirements.txt</pre>
-</section>
-
-<section id="s3">
-  <h2>⚙️ گام ۳ — ساخت پیکربندی</h2>
-<pre>cp config.example.yaml config.yaml</pre>
-  <p>فایل <code>config.yaml</code> را ویرایش کنید. مهم‌ترین گزینه‌ها:</p>
-  <table>
-    <tr><th>گزینه</th><th>اثر</th></tr>
-    <tr><td><code>sources[].username</code></td><td>کانال منبع (بدون @ هم قبول است)</td></tr>
-    <tr><td><code>destinations[].chat</code></td><td>کانال مقصد؛ یکی را <code>quarantine: true</code> کنید</td></tr>
-    <tr><td><code>distribution.strategy</code></td><td>پیش‌فرض <code>round_robin</code></td></tr>
-    <tr><td><code>testing.enabled</code> / <code>location.enabled</code></td><td>برای شروع می‌توانید <code>false</code> بگذارید</td></tr>
-    <tr><td><code>schedule.interval_hours</code></td><td>باید با cron گردش کار یکی باشد (پیش‌فرض ۳)</td></tr>
-  </table>
-  <p>شرح کامل همه گزینه‌ها: <a href="CONFIGURATION.fa.md">docs/CONFIGURATION.fa.md</a></p>
-</section>
-
-<section id="s4">
-  <h2>🔐 گام ۴ — تنظیم اسرار (خیلی مهم)</h2>
-  <div class="warnbox">⚠️ توکن و نشست را <b>هرگز</b> داخل فایل، عکس یا پیام فورواردی نگذارید. فقط متغیر محیطی:</div>
-<pre># ویندوز (موقت، فقط همان ترمینال):
-set BOT_TOKEN=123456:ABC...
-# لینوکس/مک:
-export BOT_TOKEN=123456:ABC...</pre>
-  <table>
-    <tr><th>متغیر</th><th>الزامی؟</th></tr>
-    <tr><td><code>BOT_TOKEN</code></td><td class="ok">بله</td></tr>
-    <tr><td><code>API_ID</code> / <code>API_HASH</code> / <code>SESSION_STRING</code></td><td>فقط مسیر دوم</td></tr>
-    <tr><td><code>MAXMIND_LICENSE_KEY</code></td><td>فقط اگر موقعیت فعال است</td></tr>
+    <tr><th>کجا</th><th>چه می‌بینی</th></tr>
+    <tr><td>کانال مقصد</td><td>کانفیگ‌های تازه با موقعیت و وضعیت تست</td></tr>
+    <tr><td>کانال قرنطینه</td><td>کانفیگ‌هایی که تستشان ناموفق بود (جدا از بقیه)</td></tr>
+    <tr><td>تب Actions</td><td>خلاصه هر اجرا: چند پست، چند ارسال، چند خطا</td></tr>
   </table>
 </section>
 
-<section id="s5">
-  <h2>🧪 گام ۵ — اجرای آزمایشی محلی</h2>
-<pre>pytest tests/ -q
-python -m src.main --config config.yaml --once</pre>
-  <p>خروجی موفق شبیه این است:</p>
-<pre>دریافت: 4 | استخراج: 4 | ارسال موفق: 4 | ناموفق: 0</pre>
-  <div class="tip">💡 اجرای دوم بدون پست جدید باید <b>صفر ارسال</b> داشته باشد (تست Idempotency).</div>
-</section>
-
-<section id="s6">
-  <h2>☁️ گام ۶ — پوش به گیت‌هاب</h2>
-<pre>git init
-git add .
-git commit -m "feat: telegram config forwarder (spec-kit converged)"
-git branch -M main
-git remote add origin &lt;YOUR-REPO-URL&gt;
-git push -u origin main</pre>
-  <div class="warnbox">⚠️ قبل از push مطمئن شوید فایل <code>config.yaml</code> واقعی (حاوی شناسه‌های شخصی) یا هیچ secretای کامیت نمی‌شود. <code>state/state.json</code> مشکلی ندارد.</div>
-</section>
-
-<section id="s7">
-  <h2>⏰ گام ۷ — فعال‌سازی اجرای خودکار</h2>
-  <div class="step"><div class="num">۱</div><div>در صفحه مخزن: <code>Settings → Secrets → Actions</code> → افزودن <code>BOT_TOKEN</code> (و در صورت نیاز بقیه اسرار).</div></div>
-  <div class="step"><div class="num">۲</div><div>تب <code>Actions</code> → فعال‌سازی workflowها → اجرای دستی <code>forwarder</code> با <code>Run workflow</code>.</div></div>
-  <div class="step"><div class="num">۳</div><div>زمان‌بندی خودکار هر ۳ ساعت (<code>0 */3 * * *</code>) از همان اول فعال است؛ کاری لازم نیست.</div></div>
-</section>
-
-<section id="s8">
-  <h2>📊 گام ۸ — مشاهده نتایج</h2>
+<section>
+  <h2>🛠️ اگر چیزی درست کار نکرد</h2>
   <table>
-    <tr><th>کجا</th><th>چه می‌بینید</th></tr>
-    <tr><td>تب Actions → هر اجرا → Summary</td><td>تعداد دریافت/استخراج/ارسال/ناموفق</td></tr>
-    <tr><td>کامیت‌های <code>chore: update forwarder state</code></td><td>وضعیت پایدار بین اجراها (جلوگیری از تکراری)</td></tr>
-    <tr><td>کانال مقصد / قرنطینه</td><td>پیام‌های قالب‌بندی‌شده + موارد ناموفق جدا</td></tr>
+    <tr><th>مشکل</th><th>راه‌حل در یک جمله</th></tr>
+    <tr><td>هیچی ارسال نشد</td><td><code>BOT_TOKEN</code> را در Secrets چک کن و ربات را ادمین کن</td></tr>
+    <tr><td>کانال منبع خوانده نشد</td><td>نام کاربری را بدون @ و با حروف کوچک در <code>config.yaml</code> بنویس</td></tr>
+    <tr><td>همه تست‌ها انجام‌نشده است</td><td>طبیعی است — یعنی Xray هنوز نصب نشده یا تست خاموش است</td></tr>
   </table>
-</section>
-
-<section id="s9">
-  <h2>➕ گام ۹ — افزودن منبع یا مقصد جدید</h2>
-  <div class="step"><div class="num">۱</div><div>بلوک جدید در <code>sources</code> یا <code>destinations</code> فایل <code>config.yaml</code> اضافه کنید.</div></div>
-  <div class="step"><div class="num">۲</div><div>محلی با <code>--once</code> تست کنید.</div></div>
-  <div class="step"><div class="num">۳</div><div>کامیت و push — از چرخه بعدی اعمال می‌شود. بدون تغییر کد!</div></div>
-</section>
-
-<section id="s10">
-  <h2>🛠️ گام ۱۰ — عیب‌یابی سریع</h2>
-  <table>
-    <tr><th>نشانه</th><th>علت محتمل و راه‌حل</th></tr>
-    <tr><td>خطای <code>BOT_TOKEN</code></td><td>Secret تنظیم نشده — گام ۴ و ۷</td></tr>
-    <tr><td>صفر دریافت با وجود پست جدید</td><td>نام کاربری اشتباه یا کانال خصوصی بدون Telethon</td></tr>
-    <tr><td>همه تست‌ها <code>skipped</code></td><td>باینری Xray نصب نشده (لاگ گام نصب در Actions)</td></tr>
-    <tr><td>موقعیت همیشه Unknown</td><td><code>MAXMIND_LICENSE_KEY</code> نیست — طبیعی و بی‌خطر است</td></tr>
-    <tr><td>push وضعیت رد شد</td><td>اجرای هم‌زمان — <code>git pull --rebase</code> و push مجدد</td></tr>
-  </table>
-  <p>کامل‌تر: <a href="TROUBLESHOOTING.md">docs/TROUBLESHOOTING.md</a></p>
 </section>
 
 </main>
-<footer>ساخته‌شده با Spec Kit — spec → clarify → plan → checklist → tasks → analyze → implement → converge (Converged ✅)</footer>
+<footer>جزئیات فنی کامل: <code>docs/CONFIGURATION.fa.md</code></footer>
 </body>
 </html>
