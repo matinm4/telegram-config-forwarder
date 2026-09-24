@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>پستچی رباتی</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lalezar&family=Vazirmatn:wght@400;500;700;800&display=swap">
+<style>
+  :root{
+    color-scheme: light;
+    --paper:#FFF6E9;
+    --card:#FFFFFF;
+    --card-edge:#F0DEC3;
+    --ink:#22333F;
+    --ink-soft:#6B7F8E;
+    --lagoon:#0E7C7B;
+    --lagoon-deep:#095E5D;
+    --tangerine:#FF7A45;
+    --tangerine-soft:#FFE9DC;
+    --sunny:#E9A100;
+    --sun-soft:#FFF1C9;
+    --berry:#C93A63;
+    --berry-soft:#FDE4EC;
+    --mint:#E2F3F0;
+    --code-ground:#16303A;
+    --code-ink:#D8F3EC;
+    --shadow:0 6px 24px rgba(34,51,63,.09);
+    --ribbon:var(--lagoon);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme: dark;
+      --paper:#0A1B22;
+      --card:#102831;
+      --card-edge:#1E4250;
+      --ink:#EDF5F2;
+      --ink-soft:#9DB8C2;
+      --lagoon:#2DD4BF;
+      --lagoon-deep:#7DF0DD;
+      --tangerine:#FF9A68;
+      --tangerine-soft:#3A2318;
+      --sunny:#FFC53D;
+      --sun-soft:#3A2E0C;
+      --berry:#F47CA5;
+      --berry-soft:#3D1B28;
+      --mint:#0F3531;
+      --code-ground:#060F14;
+      --code-ink:#C9F2E6;
+      --shadow:0 6px 24px rgba(0,0,0,.45);
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --paper:#0A1B22;
+    --card:#102831;
+    --card-edge:#1E4250;
+    --ink:#EDF5F2;
+    --ink-soft:#9DB8C2;
+    --lagoon:#2DD4BF;
+    --lagoon-deep:#7DF0DD;
+    --tangerine:#FF9A68;
+    --tangerine-soft:#3A2318;
+    --sunny:#FFC53D;
+    --sun-soft:#3A2E0C;
+    --berry:#F47CA5;
+    --berry-soft:#3D1B28;
+    --mint:#0F3531;
+    --code-ground:#060F14;
+    --code-ink:#C9F2E6;
+    --shadow:0 6px 24px rgba(0,0,0,.45);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    background:var(--paper);
+    background-image:radial-gradient(circle at 15% 0%,var(--mint) 0,transparent 34%),radial-gradient(circle at 88% 8%,var(--sun-soft) 0,transparent 30%);
+    background-attachment:fixed;
+    color:var(--ink);
+    font-family:'Vazirmatn',Tahoma,'Segoe UI',Arial,sans-serif;
+    line-height:2.05;
+    padding:0 16px;
+    padding-block:0 70px;
+  }
+  .topbar{
+    position:sticky;top:env(safe-area-inset-top,0px);z-index:20;
+    margin:0 -16px;padding:10px 16px;
+    background:color-mix(in srgb,var(--card) 88%,transparent);
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    border-bottom:2px solid var(--card-edge);
+  }
+  .topbar-inner{max-width:780px;margin:0 auto;display:flex;align-items:center;gap:12px}
+  .topbar .msg{font-size:.85rem;font-weight:800;color:var(--ink-soft);white-space:nowrap}
+  .topbar .bar{flex:1;height:12px;border-radius:99px;background:var(--card-edge);overflow:hidden}
+  .topbar .bar i{display:block;height:100%;width:0;border-radius:99px;
+    background:linear-gradient(-90deg,var(--lagoon),var(--tangerine),var(--sunny));
+    transition:width .5s ease}
+  .theme-btn{
+    font-family:inherit;font-size:.8rem;font-weight:800;cursor:pointer;
+    border:2px solid var(--card-edge);background:var(--card);color:var(--ink);
+    border-radius:99px;padding:2px 14px;
+  }
+  .theme-btn:focus-visible{outline:3px solid var(--sunny);outline-offset:2px}
+  .wrap{max-width:780px;margin:0 auto}
+  /* HERO */
+  .hero{
+    position:relative;text-align:center;overflow:hidden;
+    background:var(--card);border:2px solid var(--card-edge);
+    border-radius:28px;box-shadow:var(--shadow);
+    margin-top:22px;padding:40px 22px 30px;
+  }
+  .hero .sky{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+  .hero .sky span{position:absolute;font-size:1.5rem;opacity:.85;animation:float 5s ease-in-out infinite}
+  .hero .sky span:nth-child(1){top:12%;right:8%}
+  .hero .sky span:nth-child(2){top:20%;left:10%;animation-delay:1.2s;font-size:1.2rem}
+  .hero .sky span:nth-child(3){bottom:16%;right:14%;animation-delay:2s;font-size:1.1rem}
+  .hero .sky span:nth-child(4){bottom:22%;left:14%;animation-delay:.6s}
+  @keyframes float{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-12px) rotate(6deg)}}
+  @media (prefers-reduced-motion:reduce){.hero .sky span{animation:none}.topbar .bar i{transition:none}}
+  .robot{width:150px;height:auto;position:relative;z-index:1}
+  .hero h1{
+    font-family:'Lalezar',cursive;font-weight:400;
+    font-size:3rem;line-height:1.4;margin:8px 0 0;text-wrap:balance;
+  }
+  .hero h1 .teal{color:var(--lagoon-deep)}
+  .hero h1 .tang{color:var(--tangerine)}
+  .hero p.sub{margin:6px auto 0;max-width:34rem;color:var(--ink-soft);font-size:1.02rem}
+  .badges{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+  .badges span{
+    font-size:.82rem;font-weight:800;border-radius:99px;padding:3px 16px;
+    border:2px solid var(--card-edge);background:var(--paper);
+  }
+  .badges .b1{background:var(--mint);border-color:var(--lagoon)}
+  .badges .b2{background:var(--sun-soft);border-color:var(--sunny)}
+  .badges .b3{background:var(--tangerine-soft);border-color:var(--tangerine)}
+  /* BACKPACK */
+  .card{
+    background:var(--card);border:1px solid var(--card-edge);
+    border-radius:22px;box-shadow:var(--shadow);
+    padding:22px 20px;margin:20px 0;position:relative;
+  }
+  .card.kit{border-top:8px solid var(--sunny)}
+  .card h2{font-family:'Lalezar',cursive;font-weight:400;font-size:1.7rem;margin:0 0 4px;line-height:1.6}
+  .card h2 small{font-family:'Vazirmatn';font-size:.8rem;font-weight:800;color:var(--ink-soft)}
+  .kit-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}
+  @media (max-width:520px){.kit-grid{grid-template-columns:1fr}}
+  .kit-item{background:var(--paper);border:1px solid var(--card-edge);border-radius:14px;padding:10px 14px;font-size:.9rem}
+  .kit-item b{display:block;font-size:.95rem}
+  .kit-item small{color:var(--ink-soft)}
+  /* JOURNEY */
+  .journey{position:relative;margin:26px 0 0;padding:0}
+  .journey::before{
+    content:"";position:absolute;top:30px;bottom:30px;right:43px;
+    border-right:4px dotted var(--card-edge);
+  }
+  .step{
+    position:relative;display:grid;grid-template-columns:64px 1fr;gap:14px;
+    margin:0 0 20px;
+  }
+  .medal{
+    width:64px;height:64px;border-radius:50%;z-index:1;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Lalezar',cursive;font-size:1.9rem;line-height:1;
+    color:#fff;background:var(--ribbon,#0E7C7B);
+    border:4px solid var(--card);
+    box-shadow:var(--shadow);
+    font-variant-numeric:tabular-nums;
+  }
+  .step:nth-child(odd){--ribbon:var(--lagoon)}
+  .step:nth-child(even){--ribbon:var(--tangerine)}
+  .step:nth-child(3n){--ribbon:var(--sunny)}
+  .step .body{
+    background:var(--card);border:1px solid var(--card-edge);
+    border-top:8px solid var(--ribbon);
+    border-radius:20px;box-shadow:var(--shadow);
+    padding:18px 18px 14px;
+  }
+  .step .body h2{font-family:'Lalezar',cursive;font-weight:400;font-size:1.55rem;margin:0;line-height:1.6}
+  .analogy{background:var(--mint);border-radius:12px;padding:8px 14px;margin:10px 0;font-size:.93rem}
+  .analogy b{color:var(--lagoon-deep)}
+  .clicks{background:var(--paper);border:1px solid var(--card-edge);border-radius:14px;padding:12px 16px;margin:10px 0;font-size:.93rem}
+  .clicks .row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:3px 0}
+  .clicks .arrow{color:var(--lagoon-deep);font-weight:900}
+  code{
+    direction:ltr;display:inline-block;
+    background:var(--code-ground);color:var(--code-ink);
+    border-radius:8px;padding:1px 10px;
+    font-family:Consolas,'Courier New',monospace;font-size:.83rem;
+  }
+  .copybtn{
+    font-family:inherit;font-size:.78rem;font-weight:800;cursor:pointer;
+    background:var(--lagoon);color:#fff;border:none;border-radius:8px;padding:2px 12px;
+  }
+  .copybtn.alt{background:var(--tangerine)}
+  .copybtn:focus-visible{outline:3px solid var(--sunny);outline-offset:2px}
+  .tip{border-right:5px solid var(--sunny);background:var(--sun-soft);padding:8px 14px;border-radius:10px;margin:10px 0;font-size:.9rem}
+  .warn{border-right:5px solid var(--berry);background:var(--berry-soft);padding:8px 14px;border-radius:10px;margin:10px 0;font-size:.9rem}
+  .done{display:flex;align-items:center;gap:10px;margin-top:12px;padding-top:10px;
+    border-top:1px dashed var(--card-edge);font-weight:800;cursor:pointer;font-size:.95rem}
+  .done input{width:24px;height:24px;accent-color:var(--lagoon);cursor:pointer;flex:none}
+  .done input:focus-visible{outline:3px solid var(--sunny);outline-offset:2px}
+  .step.finished{opacity:.72}
+  .step.finished .body h2{text-decoration:line-through;text-decoration-thickness:2px}
+  .step.finished .medal{background:var(--lagoon-deep)}
+  /* celebration */
+  .party{
+    display:none;text-align:center;
+    background:linear-gradient(-45deg,var(--mint),var(--sun-soft));
+    border:2px dashed var(--lagoon);border-radius:20px;
+    padding:22px;margin:20px 0;
+  }
+  .party.show{display:block}
+  .party .big{font-size:2.6rem}
+  .party h2{font-family:'Lalezar';font-weight:400;font-size:1.8rem;margin:4px 0}
+  /* doctor + dictionary */
+  .table-scroll{overflow-x:auto;border-radius:12px}
+  table{width:100%;border-collapse:collapse;font-size:.88rem;min-width:420px}
+  th,td{border:1px solid var(--card-edge);padding:9px 12px;text-align:right;vertical-align:top}
+  th{background:var(--paper);color:var(--lagoon-deep);font-weight:800}
+  td{background:var(--card)}
+  .words{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}
+  @media (max-width:520px){.words{grid-template-columns:1fr}}
+  .word{background:var(--paper);border:1px solid var(--card-edge);border-radius:14px;padding:10px 14px}
+  .word b{color:var(--lagoon-deep)}
+  .word small{color:var(--ink-soft);display:block;font-size:.86rem}
+  .grownups{border-top:8px solid var(--berry)}
+  footer{text-align:center;color:var(--ink-soft);font-size:.83rem;padding:26px 0 0}
+  .confetti{position:fixed;top:-20px;z-index:99;pointer-events:none;animation:fall linear forwards}
+  @keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+</style>
+</head>
+<body>
+
+<div class="topbar" role="status">
+  <div class="topbar-inner">
+    <span class="msg" id="progressText">۰ از ۷ قدم</span>
+    <div class="bar" aria-hidden="true"><i id="progressFill"></i></div>
+    <button class="theme-btn" id="themeBtn" type="button">شب / روز</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="sky" aria-hidden="true"><span>✉️</span><span>☁️</span><span>⭐</span><span>🎈</span></div>
+    <svg class="robot" viewBox="0 0 150 150" role="img" aria-label="پستچی رباتی">
+      <ellipse cx="75" cy="138" rx="34" ry="7" fill="#000" opacity=".12"/>
+      <rect x="48" y="52" width="54" height="58" rx="16" fill="#0E7C7B"/>
+      <rect x="48" y="52" width="54" height="58" rx="16" fill="none" stroke="#095E5D" stroke-width="4"/>
+      <rect x="58" y="66" width="34" height="22" rx="11" fill="#fff"/>
+      <circle cx="68" cy="77" r="5" fill="#22333F"/>
+      <circle cx="82" cy="77" r="5" fill="#22333F"/>
+      <circle cx="70" cy="75" r="1.8" fill="#fff"/>
+      <circle cx="84" cy="75" r="1.8" fill="#fff"/>
+      <rect x="66" y="94" width="18" height="5" rx="2.5" fill="#FFC53D"/>
+      <line x1="75" y1="52" x2="75" y2="30" stroke="#095E5D" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="75" cy="25" r="8" fill="#FF7A45" stroke="#095E5D" stroke-width="3"/>
+      <rect x="30" y="72" width="12" height="24" rx="6" fill="#FFC53D" stroke="#095E5D" stroke-width="3"/>
+      <rect x="108" y="72" width="12" height="24" rx="6" fill="#FFC53D" stroke="#095E5D" stroke-width="3"/>
+      <rect x="52" y="110" width="46" height="22" rx="6" fill="#fff" stroke="#095E5D" stroke-width="3"/>
+      <path d="M52 112 L75 126 L98 112" fill="none" stroke="#FF7A45" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="20" y="116" width="16" height="16" rx="8" fill="#22333F"/>
+      <rect x="114" y="116" width="16" height="16" rx="8" fill="#22333F"/>
+    </svg>
+    <h1><span class="teal">پستچی</span> <span class="tang">رباتی</span></h1>
+    <p class="sub">ربات کوچولویی که نامه‌ها (کانفیگ‌ها) را از کانال‌ها جمع می‌کند و به کانال تو می‌آورد — خودش، هر ۳ ساعت، حتی وقتی خوابیده‌ای!</p>
+    <div class="badges">
+      <span class="b1">۷ قدم ساده</span>
+      <span class="b2">فقط با مرورگر</span>
+      <span class="b3">بدون حتی یک دستور</span>
+    </div>
+  </header>
+
+  <section class="card kit">
+    <h2>کوله‌پشتی‌ات را ببند <small>— ۴ وسیله لازم</small></h2>
+    <p style="margin:0;color:var(--ink-soft);font-size:.93rem">مثل بستن کوله برای مدرسه. این‌ها را آماده کن بعد راه بیفت:</p>
+    <div class="kit-grid">
+      <div class="kit-item"><b>حساب گیت‌هاب</b><small>خانه‌ی اینترنتی پروژه — رایگان در github.com</small></div>
+      <div class="kit-item"><b>تلگرام</b><small>همان پیام‌رسانی که داری</small></div>
+      <div class="kit-item"><b>یک کانال مقصد</b><small>کانال خودت که نامه‌ها به آن می‌رسند</small></div>
+      <div class="kit-item"><b>آدرس کانال‌های منبع</b><small>کانال‌هایی که نامه‌ها را از آن‌ها برمی‌داریم</small></div>
+    </div>
+  </section>
+
+  <div class="journey">
+
+    <section class="step" id="step1">
+      <div class="medal" aria-hidden="true">۱</div>
+      <div class="body">
+        <h2>خانه‌ی پروژه را باز کن</h2>
+        <div class="analogy"><b>مثل این است که:</b> آدرس خانه‌ی دوستت را در نقشه باز کنی.</div>
+        <div class="clicks">
+          <div class="row">۱. در مرورگر برو به این آدرس:</div>
+          <div class="row"><code id="repoUrl">github.com/matinm4/telegram-config-forwarder</code>
+            <button class="copybtn" id="copyRepo" type="button">کپی</button></div>
+          <div class="row">۲. اگر فایل‌هایی مثل <code>config.yaml</code> را دیدی، یعنی رسیده‌ای!</div>
+        </div>
+        <div class="tip">اگر صفحه باز نشد، از یک بزرگ‌تر کمک بگیر تا پروژه را به گیت‌هاب پوش کند.</div>
+        <label class="done"><input type="checkbox" data-step="step1"> انجام شد! خانه را پیدا کردم</label>
+      </div>
+    </section>
+
+    <section class="step" id="step2">
+      <div class="medal" aria-hidden="true">۲</div>
+      <div class="body">
+        <h2>کارت شناسایی پستچی را بگیر</h2>
+        <div class="analogy"><b>مثل این است که:</b> برای مدرسه کارت دانش‌آموزی بگیری. ربات ما هم یک «کارت» لازم دارد به اسم <b>توکن</b>.</div>
+        <div class="clicks">
+          <div class="row">۱. در تلگرام برو به <code>@BotFather</code> و <code>Start</code> را بزن</div>
+          <div class="row">۲. بنویس: <code>/newbot</code> <button class="copybtn alt" id="copyNewbot" type="button">کپی</button></div>
+          <div class="row">۳. یک اسم قشنگ انتخاب کن، مثلاً <code>postchi_bot</code></div>
+          <div class="row">۴. آقای BotFather یک کد طولانی می‌دهد — این همان <b>توکن</b> است. نگهش دار!</div>
+        </div>
+        <div class="warn">توکن مثل رمز کیف پولت است! برای هیچ‌کس نفرست و هیچ‌جا (حتی در فایل‌ها) ننویس.</div>
+        <label class="done"><input type="checkbox" data-step="step2"> انجام شد! توکن را گرفتم</label>
+      </div>
+    </section>
+
+    <section class="step" id="step3">
+      <div class="medal" aria-hidden="true">۳</div>
+      <div class="body">
+        <h2>پستچی را نگهبان کانالت کن</h2>
+        <div class="analogy"><b>مثل این است که:</b> به نگهبان مدرسه کلید بدهی تا نامه‌ها را داخل بگذارد. ربات باید در کانالت <b>ادمین</b> باشد.</div>
+        <div class="clicks">
+          <div class="row">۱. کانال مقصدت را در تلگرام باز کن</div>
+          <div class="row">۲. اسم کانال <span class="arrow">←</span> <b>مدیریت</b> <span class="arrow">←</span> <b>مدیران</b> <span class="arrow">←</span> <b>افزودن مدیر</b></div>
+          <div class="row">۳. رباتت را اضافه کن (اجازه‌ی «ارسال پیام» کافی است)</div>
+          <div class="row">۴. اگر کانال قرنطینه هم داری، برای آن هم همین کار را بکن</div>
+        </div>
+        <label class="done"><input type="checkbox" data-step="step3"> انجام شد! ربات ادمین شد</label>
+      </div>
+    </section>
+
+    <section class="step" id="step4">
+      <div class="medal" aria-hidden="true">۴</div>
+      <div class="body">
+        <h2>کارت را در گاوصندوق بگذار</h2>
+        <div class="analogy"><b>مثل این است که:</b> کارتت را در گاوصندوق بگذاری، نه روی میز! گاوصندوق گیت‌هاب اسمش <b>Secrets</b> است.</div>
+        <div class="clicks">
+          <div class="row">۱. در صفحه‌ی پروژه: <b>Settings</b> <span class="arrow">←</span> <b>Secrets and variables</b> <span class="arrow">←</span> <b>Actions</b></div>
+          <div class="row">۲. دکمه‌ی <b>New repository secret</b> را بزن</div>
+          <div class="row">۳. در Name بنویس: <code>BOT_TOKEN</code> <button class="copybtn" id="copySecret" type="button">کپی</button></div>
+          <div class="row">۴. در Secret توکن را بچسبان و <b>Add secret</b> را بزن</div>
+        </div>
+        <div class="tip">رازهای اختیاری (فقط اگر بزرگ‌ترها گفتند): <code>API_ID</code> ،<code>API_HASH</code> ،<code>SESSION_STRING</code> برای راه دوم و <code>MAXMIND_LICENSE_KEY</code> برای تشخیص شهر.</div>
+        <label class="done"><input type="checkbox" data-step="step4"> انجام شد! توکن در گاوصندوق است</label>
+      </div>
+    </section>
+
+    <section class="step" id="step5">
+      <div class="medal" aria-hidden="true">۵</div>
+      <div class="body">
+        <h2>به پستچی آدرس بده</h2>
+        <div class="analogy"><b>مثل این است که:</b> روی پاکت بنویسی «از طرف کی، به دست کی». این آدرس‌ها در دفترچه‌ای به اسم <b>config.yaml</b> نوشته می‌شوند.</div>
+        <div class="clicks">
+          <div class="row">۱. در صفحه‌ی پروژه روی فایل <code>config.yaml</code> کلیک کن</div>
+          <div class="row">۲. دکمه‌ی <b>✏️ مداد (Edit)</b> بالای فایل را بزن</div>
+          <div class="row">۳. این دو جا را با آدرس خودت عوض کن:</div>
+          <div class="row"><code>username: "example_channel"</code> <span class="arrow">←</span> کانال منبع (بدون @)</div>
+          <div class="row"><code>chat: "@my_channel"</code> <span class="arrow">←</span> کانال مقصد تو</div>
+          <div class="row">۴. دکمه‌ی سبز <b>Commit changes</b> را بزن — تمام!</div>
+        </div>
+        <div class="tip">می‌توانی چند منبع و چند مقصد بنویسی؛ فقط هر کدام یک <code>id</code> جدا داشته باشند.</div>
+        <label class="done"><input type="checkbox" data-step="step5"> انجام شد! آدرس‌ها را نوشتم</label>
+      </div>
+    </section>
+
+    <section class="step" id="step6">
+      <div class="medal" aria-hidden="true">۶</div>
+      <div class="body">
+        <h2>زنگ اول را خودت بزن</h2>
+        <div class="analogy"><b>مثل این است که:</b> روز اول مدرسه مامان تو را می‌رساند، از روز بعد سرویس دنبالت می‌آید! اولین اجرا دستی است، بقیه خودکار.</div>
+        <div class="clicks">
+          <div class="row">۱. در صفحه‌ی پروژه تب <b>Actions</b> را باز کن</div>
+          <div class="row">۲. از لیست سمت چپ <b>forwarder</b> را انتخاب کن</div>
+          <div class="row">۳. دکمه‌ی <b>Run workflow</b> <span class="arrow">←</span> <b>Run workflow</b> را بزن</div>
+          <div class="row">۴. ۲ تا ۳ دقیقه صبر کن (یک لیوان آب بخور!)</div>
+        </div>
+        <label class="done"><input type="checkbox" data-step="step6"> انجام شد! دکمه را زدم</label>
+      </div>
+    </section>
+
+    <section class="step" id="step7">
+      <div class="medal" aria-hidden="true">۷</div>
+      <div class="body">
+        <h2>نامه‌ها را تحویل بگیر</h2>
+        <div class="analogy"><b>مثل این است که:</b> صندوق پست را باز کنی و نامه‌هایت را ببینی!</div>
+        <div class="table-scroll"><table>
+          <tr><th>کجا را نگاه کنی؟</th><th>چه می‌بینی؟</th></tr>
+          <tr><td>کانال مقصدت</td><td>کانفیگ‌های تازه، با اسم شهر و نتیجه‌ی تست</td></tr>
+          <tr><td>کانال قرنطینه</td><td>کانفیگ‌های مریض (تست خراب) که جدا نگه داشته شده‌اند</td></tr>
+          <tr><td>تب Actions</td><td>کارنامه‌ی هر اجرا: چند نامه، چند ارسال، چند خطا</td></tr>
+        </table></div>
+        <div class="tip">از این به بعد پستچی خودش <b>هر ۳ ساعت</b> می‌آید — حتی وقتی کامپیوترت خاموش است و تو خوابیده‌ای!</div>
+        <label class="done"><input type="checkbox" data-step="step7"> انجام شد! نامه‌ها رسیدند</label>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="party" id="party">
+    <div class="big">🎉📮🎉</div>
+    <h2>آفرین! پستچی آماده‌ی کار است</h2>
+    <p style="margin:0;color:var(--ink-soft)">هر ۷ قدم را انجام دادی. از این به بعد نامه‌ها خودشان می‌آیند!</p>
+  </div>
+
+  <section class="card">
+    <h2>دکتر پستچی <small>— اگر چیزی خراب شد</small></h2>
+    <p style="margin:0 0 8px;color:var(--ink-soft);font-size:.92rem">نگران نباش! مشکلت را پیدا کن و یک‌جمله‌ای خوبش کن:</p>
+    <div class="table-scroll"><table>
+      <tr><th>مشکل</th><th>راه‌حل در یک جمله</th></tr>
+      <tr><td>هیچ نامه‌ای نیامد</td><td><code>BOT_TOKEN</code> را در Secrets چک کن و مطمئن شو ربات در کانال ادمین است</td></tr>
+      <tr><td>کانال منبع خوانده نشد</td><td>اسم کانال را بدون @ و با حروف کوچک در <code>config.yaml</code> بنویس</td></tr>
+      <tr><td>همه‌ی تست‌ها «انجام‌نشده» است</td><td>طبیعی است — ابزار تست (Xray) هنوز آماده نشده یا تست خاموش است</td></tr>
+      <tr><td>شهر همیشه «نامشخص» است</td><td>طبیعی است — کلید <code>MAXMIND_LICENSE_KEY</code> را نگذاشته‌ای</td></tr>
+      <tr><td>خطای «BOT_TOKEN یافت نشد»</td><td>قدم ۴ را دوباره انجام بده؛ اسم راز باید دقیقاً <code>BOT_TOKEN</code> باشد</td></tr>
+    </table></div>
+  </section>
+
+  <section class="card">
+    <h2>فرهنگ لغت پستچی <small>— ۵ کلمه‌ی جدید</small></h2>
+    <div class="words">
+      <div class="word"><b>توکن (Token)</b><small>کارت شناسایی ربات؛ مثل رمز، باید مخفی بماند.</small></div>
+      <div class="word"><b>Secrets (گاوصندوق)</b><small>جای امن در گیت‌هاب برای نگه داشتن توکن‌ها.</small></div>
+      <div class="word"><b>config.yaml (دفتر آدرس)</b><small>فایلی که در آن نوشته‌ای از کدام کانال به کدام کانال برویم.</small></div>
+      <div class="word"><b>Actions (کارخانه)</b><small>جایی در گیت‌هاب که ربات هر ۳ ساعت در آن کار می‌کند.</small></div>
+      <div class="word"><b>قرنطینه</b><small>کانال جدا برای کانفیگ‌های مریض تا قاطی خوب‌ها نشوند.</small></div>
+    </div>
+  </section>
+
+  <section class="card grownups">
+    <h2>گوشه‌ی بزرگ‌ترها <small>— جزئیات فنی</small></h2>
+    <p style="margin:0 0 8px;color:var(--ink-soft);font-size:.9rem">این راهنما ساده‌شده‌ی این فایل‌های واقعی پروژه است:</p>
+    <div class="clicks">
+      <div class="row"><code>config.example.yaml</code> <span class="arrow">←</span> الگوی دفتر آدرس (قدم ۵)</div>
+      <div class="row"><code>.github/workflows/forwarder.yml</code> <span class="arrow">←</span> کارخانه‌ی هر ۳ ساعت (قدم ۶)</div>
+      <div class="row"><code>docs/CONFIGURATION.fa.md</code> <span class="arrow">←</span> توضیح همه‌ی گزینه‌ها</div>
+      <div class="row"><code>docs/TROUBLESHOOTING.md</code> <span class="arrow">←</span> عیب‌یابی کامل</div>
+    </div>
+  </section>
+
+  <footer>ساخته‌شده برای پروژه‌ی پستچی رباتی &bull; <code>docs/robot-postman-guide.html</code></footer>
+
+</div>
+
+<script>
+(function(){
+  var TOTAL = 7;
+  var text = document.getElementById('progressText');
+  var fill = document.getElementById('progressFill');
+  var party = document.getElementById('party');
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('.done input'));
+  var faDigits = ['۰','۱','۲','۳','۴','۵','۶','۷'];
+  function fa(n){ return String(n).split('').map(function(d){ return faDigits[+d] || d; }).join(''); }
+  function load(){
+    try{
+      var saved = JSON.parse(localStorage.getItem('postchi-progress') || '{}');
+      boxes.forEach(function(b){ if(saved[b.getAttribute('data-step')]) b.checked = true; });
+    }catch(e){}
+    try{
+      var t = localStorage.getItem('postchi-theme');
+      if(t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t);
+    }catch(e){}
+  }
+  function save(){
+    try{
+      var obj = {};
+      boxes.forEach(function(b){ obj[b.getAttribute('data-step')] = b.checked; });
+      localStorage.setItem('postchi-progress', JSON.stringify(obj));
+    }catch(e){}
+  }
+  function celebrate(){
+    var colors = ['#0E7C7B','#FF7A45','#FFC53D','#C93A63','#2DD4BF'];
+    for(var i = 0; i < 60; i++){
+      (function(i){
+        var s = document.createElement('span');
+        s.className = 'confetti';
+        s.textContent = ['✉️','⭐','🎉','📮'][i % 4];
+        s.style.right = (Math.random() * 100) + 'vw';
+        s.style.fontSize = (14 + Math.random() * 18) + 'px';
+        s.style.color = colors[i % colors.length];
+        s.style.animationDuration = (2.2 + Math.random() * 1.8) + 's';
+        document.body.appendChild(s);
+        setTimeout(function(){ s.remove(); }, 4200);
+      })(i);
+    }
+  }
+  var celebrated = false;
+  function render(){
+    var n = boxes.filter(function(b){ return b.checked; }).length;
+    text.textContent = fa(n) + ' از ' + fa(TOTAL) + ' قدم' + (n === TOTAL ? ' — آفرین!' : '');
+    fill.style.width = (n / TOTAL * 100) + '%';
+    boxes.forEach(function(b){
+      var card = document.getElementById(b.getAttribute('data-step'));
+      if(card) card.classList.toggle('finished', b.checked);
+    });
+    if(n === TOTAL){ party.classList.add('show'); if(!celebrated){ celebrated = true; celebrate(); } }
+    else { party.classList.remove('show'); celebrated = false; }
+  }
+  boxes.forEach(function(b){ b.addEventListener('change', function(){ save(); render(); }); });
+  function copyText(t, btn, idle){
+    var done = function(){ btn.textContent = 'کپی شد!'; setTimeout(function(){ btn.textContent = idle; }, 1500); };
+    if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(done, done); }
+    else {
+      var el = document.createElement('textarea');
+      el.value = t; document.body.appendChild(el); el.select();
+      try{ document.execCommand('copy'); }catch(e){}
+      document.body.removeChild(el); done();
+    }
+  }
+  document.getElementById('copyRepo').addEventListener('click', function(){
+    copyText(document.getElementById('repoUrl').textContent, this, 'کپی');
+  });
+  document.getElementById('copyNewbot').addEventListener('click', function(){ copyText('/newbot', this, 'کپی'); });
+  document.getElementById('copySecret').addEventListener('click', function(){ copyText('BOT_TOKEN', this, 'کپی'); });
+  document.getElementById('themeBtn').addEventListener('click', function(){
+    var cur = document.documentElement.getAttribute('data-theme');
+    var next = cur === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try{ localStorage.setItem('postchi-theme', next); }catch(e){}
+  });
+  load(); render();
+})();
+</script>
+</body>
+</html>

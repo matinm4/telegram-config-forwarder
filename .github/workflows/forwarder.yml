@@ -19,6 +19,9 @@ env:
 jobs:
   run:
     runs-on: ubuntu-latest
+    env:
+      # پرچم کمکی: کانتکست secrets مستقیم در if مجاز نیست، پس اینجا به env منتقل می‌شود
+      HAS_MAXMIND_KEY: ${{ secrets.MAXMIND_LICENSE_KEY != '' }}
     steps:
       - name: دریافت کد
         uses: actions/checkout@v4
@@ -62,7 +65,7 @@ jobs:
           echo "$PWD" >> "$GITHUB_PATH"
 
       - name: دانلود پایگاه GeoIP (اختیاری)
-        if: ${{ secrets.MAXMIND_LICENSE_KEY != '' }}
+        if: env.HAS_MAXMIND_KEY == 'true'
         run: |
           curl -fsSL -o geoip.tar.gz \
             "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City&license_key=${{ secrets.MAXMIND_LICENSE_KEY }}&suffix=tar.gz"
