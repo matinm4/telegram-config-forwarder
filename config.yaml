@@ -6,13 +6,13 @@ schedule:
   interval_hours: 3
 sources:
   - id: "src1"
-    username: "example_channel"
+    username: "HyperConfigPro"
     enabled: true
     fetch_mode: "auto"      # scrape | telethon | auto
     proxy: null             # اختیاری، مثل socks5://127.0.0.1:10808
 destinations:
   - id: "main"
-    chat: "@my_channel"
+    chat: "@ApexConfigVpn"
     enabled: true
     sender: "auto"          # bot_api | telethon | auto
     quarantine: false
