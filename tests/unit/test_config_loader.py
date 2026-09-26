@@ -21,7 +21,7 @@ MINIMAL = {
     "filtering": {"enabled": True, "rules": [],
                   "append_destination_username": True},
     "location": {"enabled": True, "fallback_display": "Unknown"},
-    "testing": {"enabled": True, "timeout_s": 15, "xray_version": "v25.9.1"},
+    "testing": {"enabled": True, "timeout_s": 15, "xray_version": "v26.3.27"},
     "fallback": {"source_fallback_enabled": True,
                  "sender_fallback_enabled": True, "after_failures": 2},
     "logging": {"level": "INFO"},

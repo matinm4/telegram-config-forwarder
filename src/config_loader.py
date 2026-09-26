@@ -45,7 +45,7 @@ class LocationCfg(StrictModel):
 class Testing(StrictModel):
     enabled: bool = True
     timeout_s: int = Field(default=15, gt=0, le=300)
-    xray_version: str = "v25.9.1"
+    xray_version: str = "v26.3.27"
 
 
 class Fallback(StrictModel):

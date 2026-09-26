@@ -34,7 +34,7 @@ location:
 testing:
   enabled: true
   timeout_s: 15
-  xray_version: "v25.9.1"
+  xray_version: "v26.3.27"
 fallback:
   source_fallback_enabled: true
   sender_fallback_enabled: true

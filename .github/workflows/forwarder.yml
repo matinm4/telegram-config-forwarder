@@ -13,7 +13,7 @@ permissions:
   contents: write  # برای کامیت state/state.json
 
 env:
-  XRAY_VERSION: "v25.9.1"
+  XRAY_VERSION: "v26.3.27"
   PYTHON_VERSION: "3.12"
 
 jobs:
