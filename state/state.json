@@ -495,6 +495,16 @@
       "failed": 0,
       "sent": 0,
       "errors": []
+    },
+    {
+      "started_at": "2026-09-30T00:02:59.807910+00:00",
+      "finished_at": "2026-09-30T00:03:00.555548+00:00",
+      "fetched_posts": 0,
+      "extracted": 0,
+      "tested": 0,
+      "failed": 0,
+      "sent": 0,
+      "errors": []
     }
   ]
 }
