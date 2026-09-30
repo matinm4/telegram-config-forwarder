@@ -53,7 +53,8 @@ async def run_once(config: AppConfig,
         cleaner = Cleaner(config.filtering.rules)
     store.load()
     summary = {"fetched_posts": 0, "extracted": 0, "sent": 0,
-               "failed": 0, "skipped_duplicates": 0, "errors": []}
+               "tested": 0, "failed": 0, "skipped_duplicates": 0,
+               "errors": []}
     started = _utcnow()
 
     destinations = [d for d in config.destinations if d.enabled]
@@ -77,6 +78,7 @@ async def run_once(config: AppConfig,
         started_at=started, finished_at=_utcnow(),
         fetched_posts=summary["fetched_posts"],
         extracted=summary["extracted"], sent=summary["sent"],
+        tested=summary["tested"],
         failed=summary["failed"], errors=summary["errors"][:10]))
     store.save()
     return summary
@@ -161,6 +163,8 @@ async def _process_post(config: AppConfig, post, source_id: str,
                         display=config.location.fallback_display))
         result = (await tester.test(record) if tester
                   else TestResult(status="skipped"))
+        if result.status != "skipped":
+            summary["tested"] += 1
         if result.status in ("failed", "timeout"):
             item_targets = quarantine_targets
             if not item_targets:

@@ -70,6 +70,7 @@ def write_summary(summary: dict, path: str | None) -> None:
     lines = ["## خلاصه اجرا",
              f"- دریافت: {summary['fetched_posts']}",
              f"- استخراج: {summary['extracted']}",
+             f"- تست‌شده: {summary.get('tested', 0)}",
              f"- ارسال موفق: {summary['sent']}",
              f"- ناموفق: {summary['failed']}",
              f"- تکراری ردشده: {summary['skipped_duplicates']}"]
