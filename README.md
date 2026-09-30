@@ -22,7 +22,7 @@ python -m src.main --config config.yaml --once
 pytest tests/ -q
 ```
 
-مستندات: [راهنمای فارسی پیکربندی](docs/CONFIGURATION.fa.md) | [معماری](docs/ARCHITECTURE.md) | [عیب‌یابی](docs/TROUBLESHOOTING.md)
+مستندات: [این پروژه چیست؟](docs/about.html) | [راهنمای گام‌به‌گام](docs/robot-postman-guide.html) | [راهنمای فارسی پیکربندی](docs/CONFIGURATION.fa.md) | [معماری](docs/ARCHITECTURE.md) | [عیب‌یابی](docs/TROUBLESHOOTING.md)
 
 **امنیت:** توکن‌ها و نشست‌ها فقط از متغیر محیطی (در تولید: GitHub Secrets) خوانده می‌شوند و هرگز در مخزن یا لاگ قرار نمی‌گیرند.
 
@@ -46,6 +46,6 @@ python -m src.main --config config.yaml --once
 pytest tests/ -q
 ```
 
-Docs: [Persian configuration guide](docs/CONFIGURATION.fa.md) | [Architecture](docs/ARCHITECTURE.md) | [Troubleshooting](docs/TROUBLESHOOTING.md)
+Docs: [What is this project?](docs/about.html) (fa) | [Step-by-step setup guide](docs/robot-postman-guide.html) (fa) | [Persian configuration guide](docs/CONFIGURATION.fa.md) | [Architecture](docs/ARCHITECTURE.md) | [Troubleshooting](docs/TROUBLESHOOTING.md)
 
 **Security:** tokens and sessions are read only from the environment (in production: GitHub Secrets) and never stored in the repo or printed in logs.
