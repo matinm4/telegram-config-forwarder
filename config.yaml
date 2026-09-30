@@ -18,9 +18,9 @@ destinations:
     quarantine: false
   - id: "quarantine"
     chat: "@my_quarantine"
-    enabled: true
+    enabled: false
     sender: "auto"
-    quarantine: true        # حداکثر یک مقصد قرنطینه فعال
+    quarantine: false       # خاموش: کانال واقعی هنوز تعریف نشده
 distribution:
   strategy: "round_robin"  # round_robin | broadcast | balanced | source_based | per_destination
 filtering:
