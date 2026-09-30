@@ -174,6 +174,7 @@ async def _process_post(config: AppConfig, post, source_id: str,
                 continue
         else:
             item_targets = distributor.select(targets, source_id)
+        delivered = False
         for destination in item_targets:
             body = build_message(record, location, result, destination)
             if destination.rules:
@@ -182,9 +183,13 @@ async def _process_post(config: AppConfig, post, source_id: str,
                                                  body, senders, store)
             if send_res.ok:
                 summary["sent"] += 1
+                delivered = True
             else:
                 summary["failed"] += 1
-        store.mark_published(record.exact_hash)
+        if delivered:
+            store.mark_published(record.exact_hash)
+        # ارسال ناموفق: هش ثبت نمی‌شود تا در ظهور بعدی همان کانفیگ
+        # (پست‌های تکرارشونده منبع) دوباره تلاش شود.
 
 
 def _sender_order(destination, fails: int, config: AppConfig,
