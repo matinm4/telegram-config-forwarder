@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "last_processed_id": {
-    "src1": 465
+    "src1": 466
   },
   "published_hashes": [
     "7c8629f4b9e4cabbd655dc58e78086efb4719f49fb9f4ab3a343ed79370b74b0",
@@ -349,7 +349,16 @@
     "30af9043349e7fb3b70c1263070f6971584a5b321ecc5c946b4db4251377169b",
     "c34126f395a752ddabeef9c6fa93edbd2ddc544571ffe39e30d52b169adca348",
     "b67e2028af17316a5cbefab6237caa359fac59d80065e0f4d1db0b5e7bd2bad6",
-    "d06c6395b9403a9b8245b6ba229dca652c6a634ee42f679a30365f8764a8470e"
+    "d06c6395b9403a9b8245b6ba229dca652c6a634ee42f679a30365f8764a8470e",
+    "8c1eebc97800fcc1c64b4544218fbdc0a07ed742840d01d7f6b33d4889e86bb3",
+    "ac5a4adaa4a20aaf1514666dca5d37b4b7381debcf6a766f7a84a512f68739e4",
+    "247d17188ccd93e1f7f6fbeb70240087deac180ea0b7eed9ca7c15ca7c992fb0",
+    "0491ece4f75b6f3f82946646baf2cfcd76fa4541e6b8343fc68c10710e648e7e",
+    "a992dcce04856538451e3ced1e45df967e59363d4fcbd2de5f79c2d94b210988",
+    "68f0367d165554b25f76ba776e03430a0b208a6b9deb8a1c13e55fae17c96945",
+    "a7063db693fa2cf14df481d48e4f8783606d6f081d297cf06fcefc01ce5d1adc",
+    "81dccf43b6a9eb3f90637cff0c26ce0e63a8d3a5162ed35383b07a9da7a5f367",
+    "36cacb1d2d134ea49da44f8b142deb4b1547994c61f8d5f48cf614a7058d73cb"
   ],
   "distribution_cursor": 0,
   "distribution_counters": {},
@@ -575,6 +584,16 @@
       "extracted": 10,
       "tested": 1,
       "failed": 1,
+      "sent": 0,
+      "errors": []
+    },
+    {
+      "started_at": "2026-10-01T20:43:40.596063+00:00",
+      "finished_at": "2026-10-01T20:45:32.144747+00:00",
+      "fetched_posts": 1,
+      "extracted": 9,
+      "tested": 9,
+      "failed": 10,
       "sent": 0,
       "errors": []
     }
