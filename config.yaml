@@ -17,10 +17,10 @@ destinations:
     sender: "auto"          # bot_api | telethon | auto
     quarantine: false
   - id: "quarantine"
-    chat: "@my_quarantine"
-    enabled: false
+    chat: "@my_quarantine1"
+    enabled: true
     sender: "auto"
-    quarantine: false       # خاموش: کانال واقعی هنوز تعریف نشده
+    quarantine: true        # کانال قرنطینه واقعی
 distribution:
   strategy: "round_robin"  # round_robin | broadcast | balanced | source_based | per_destination
 filtering:
@@ -32,7 +32,7 @@ location:
   enabled: true
   fallback_display: "Unknown"
 testing:
-  enabled: true
+  enabled: false        # موقتاً خاموش: ارسال مستقیم بدون تست Xray
   timeout_s: 15
   xray_version: "v26.3.27"
 fallback:
