@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "last_processed_id": {
-    "src1": 464
+    "src1": 465
   },
   "published_hashes": [
     "7c8629f4b9e4cabbd655dc58e78086efb4719f49fb9f4ab3a343ed79370b74b0",
@@ -348,7 +348,8 @@
     "25218c61b6636247d733fa77cc7b0f374fe153a5dc04f5e008ed63106203fad6",
     "30af9043349e7fb3b70c1263070f6971584a5b321ecc5c946b4db4251377169b",
     "c34126f395a752ddabeef9c6fa93edbd2ddc544571ffe39e30d52b169adca348",
-    "b67e2028af17316a5cbefab6237caa359fac59d80065e0f4d1db0b5e7bd2bad6"
+    "b67e2028af17316a5cbefab6237caa359fac59d80065e0f4d1db0b5e7bd2bad6",
+    "d06c6395b9403a9b8245b6ba229dca652c6a634ee42f679a30365f8764a8470e"
   ],
   "distribution_cursor": 0,
   "distribution_counters": {},
@@ -560,6 +561,16 @@
     {
       "started_at": "2026-10-01T12:22:25.074858+00:00",
       "finished_at": "2026-10-01T12:22:28.413693+00:00",
+      "fetched_posts": 1,
+      "extracted": 10,
+      "tested": 1,
+      "failed": 1,
+      "sent": 0,
+      "errors": []
+    },
+    {
+      "started_at": "2026-10-01T20:05:09.824749+00:00",
+      "finished_at": "2026-10-01T20:05:13.131957+00:00",
       "fetched_posts": 1,
       "extracted": 10,
       "tested": 1,
