@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "last_processed_id": {
-    "src1": 472
+    "src1": 473
   },
   "published_hashes": [
     "7c8629f4b9e4cabbd655dc58e78086efb4719f49fb9f4ab3a343ed79370b74b0",
@@ -360,7 +360,8 @@
     "81dccf43b6a9eb3f90637cff0c26ce0e63a8d3a5162ed35383b07a9da7a5f367",
     "36cacb1d2d134ea49da44f8b142deb4b1547994c61f8d5f48cf614a7058d73cb",
     "5d4bc0289d2ff6452b833a42be292b129be318787892df2853ba3cf5be8717bc",
-    "4bb8a8f9e3af1e83afb378532ea8541b39b7f6ee5e1eb4c4db9c5cc064272f54"
+    "4bb8a8f9e3af1e83afb378532ea8541b39b7f6ee5e1eb4c4db9c5cc064272f54",
+    "bebfef7076f9c5080ddd2598c8f1463996d723b759792de354d08a2636348350"
   ],
   "distribution_cursor": 1,
   "distribution_counters": {},
@@ -667,6 +668,16 @@
       "extracted": 20,
       "tested": 0,
       "failed": 0,
+      "sent": 1,
+      "errors": []
+    },
+    {
+      "started_at": "2026-10-03T11:02:57.169962+00:00",
+      "finished_at": "2026-10-03T11:02:59.958744+00:00",
+      "fetched_posts": 1,
+      "extracted": 9,
+      "tested": 0,
+      "failed": 1,
       "sent": 1,
       "errors": []
     }
