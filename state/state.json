@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "last_processed_id": {
-    "src1": 476
+    "src1": 477
   },
   "published_hashes": [
     "7c8629f4b9e4cabbd655dc58e78086efb4719f49fb9f4ab3a343ed79370b74b0",
@@ -363,9 +363,11 @@
     "4bb8a8f9e3af1e83afb378532ea8541b39b7f6ee5e1eb4c4db9c5cc064272f54",
     "bebfef7076f9c5080ddd2598c8f1463996d723b759792de354d08a2636348350",
     "aef95ec1b0d6d3dadd78f4179869bf2a3b598d9106c36772979dca7b118c6cfb",
-    "efc929e911d570b4e6487d486f724aa93bb0f07e74165b93443e0f1468a99ac4"
+    "efc929e911d570b4e6487d486f724aa93bb0f07e74165b93443e0f1468a99ac4",
+    "2459ecdc8e95a30f140f09b50a7cf2028f6982e9c17cc89ea446c3d7a8179cfe",
+    "8cd304a41468e91f4bc7fc44de905cb1526af6399f6307bfdacdd32d86e42186"
   ],
-  "distribution_cursor": 1,
+  "distribution_cursor": 2,
   "distribution_counters": {},
   "consecutive_failures": {
     "source:src1": 0,
@@ -711,6 +713,16 @@
       "tested": 0,
       "failed": 0,
       "sent": 1,
+      "errors": []
+    },
+    {
+      "started_at": "2026-10-04T04:08:56.653110+00:00",
+      "finished_at": "2026-10-04T04:08:59.849505+00:00",
+      "fetched_posts": 1,
+      "extracted": 10,
+      "tested": 0,
+      "failed": 0,
+      "sent": 2,
       "errors": []
     }
   ]
