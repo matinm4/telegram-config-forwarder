@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "last_processed_id": {
-    "src1": 482
+    "src1": 485
   },
   "published_hashes": [
     "7c8629f4b9e4cabbd655dc58e78086efb4719f49fb9f4ab3a343ed79370b74b0",
@@ -773,6 +773,16 @@
       "extracted": 10,
       "tested": 0,
       "failed": 0,
+      "sent": 0,
+      "errors": []
+    },
+    {
+      "started_at": "2026-10-05T13:30:48.094164+00:00",
+      "finished_at": "2026-10-05T13:30:50.258984+00:00",
+      "fetched_posts": 3,
+      "extracted": 29,
+      "tested": 0,
+      "failed": 1,
       "sent": 0,
       "errors": []
     }
