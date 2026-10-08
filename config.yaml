@@ -5,16 +5,51 @@ version: 1
 schedule:
   interval_hours: 3
 sources:
-  - id: "src1"
-    username: "HyperConfigPro"
+  - id: "src_toxicvid"
+    username: "ToxicVid"
     enabled: true
     fetch_mode: "auto"      # scrape | telethon | auto
     proxy: null             # اختیاری، مثل socks5://127.0.0.1:10808
+  - id: "src_configshub"
+    username: "ConfigsHUB"
+    enabled: true
+    fetch_mode: "auto"
+    proxy: null
+  - id: "src_v2raysvmess"
+    username: "v2raysvmess"
+    enabled: true
+    fetch_mode: "auto"
+    proxy: null
+  - id: "src_proxymmdfreak"
+    username: "ProxyMmDFreak"
+    enabled: true
+    fetch_mode: "auto"
+    proxy: null
+  - id: "src_filembad"
+    username: "filembad"
+    enabled: true
+    fetch_mode: "auto"
+    proxy: null
 destinations:
   - id: "main"
     chat: "@ApexConfigVpn"
     enabled: true
     sender: "auto"          # bot_api | telethon | auto
+    quarantine: false
+  - id: "quantum"
+    chat: "@QuantumConfigX"
+    enabled: true
+    sender: "auto"
+    quarantine: false
+  - id: "irannet"
+    chat: "@irannetvpn"
+    enabled: true
+    sender: "auto"
+    quarantine: false
+  - id: "hyper"
+    chat: "@HyperConfigPro"
+    enabled: true
+    sender: "auto"
     quarantine: false
   - id: "quarantine"
     chat: "@my_quarantine1"
@@ -22,7 +57,7 @@ destinations:
     sender: "auto"
     quarantine: true        # کانال قرنطینه واقعی
 distribution:
-  strategy: "round_robin"  # round_robin | broadcast | balanced | source_based | per_destination
+  strategy: "broadcast"  # همه کانفیگ‌ها به همه مقصدها (round_robin سهم‌بندی می‌کند)
 filtering:
   enabled: true
   rules:
