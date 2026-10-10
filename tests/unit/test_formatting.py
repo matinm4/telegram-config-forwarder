@@ -50,6 +50,22 @@ def test_unknown_template_falls_back():
     assert get_template("nope") == get_template("default")
 
 
+def test_footer_overrides_username_block():
+    # فوتر مخصوص مقصد جایگزین خط 📢 می‌شود.
+    cfg, loc, res, dest = _parts()
+    dest.footer = "به کانال ما بپیوندید!"
+    body = build_message(cfg, loc, res, dest)
+    assert "به کانال ما بپیوندید!" in body
+    assert "@mydest" not in body
+
+
+def test_no_footer_keeps_username_block():
+    # بدون فوتر، رفتار قدیمی حفظ می‌شود.
+    cfg, loc, res, dest = _parts()
+    assert dest.footer is None
+    assert "@mydest" in build_message(cfg, loc, res, dest)
+
+
 def test_destination_extra_rules():
     # رفتار T049: قوانین مستقل مقصد روی پیام نهایی اعمال می‌شود.
     cfg, loc, res, dest = _parts()

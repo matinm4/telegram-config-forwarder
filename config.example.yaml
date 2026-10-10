@@ -16,6 +16,7 @@ destinations:
     enabled: true
     sender: "auto"          # bot_api | telethon | auto
     quarantine: false
+    footer: null            # متن تبلیغاتی مخصوص این کانال (اختیاری)؛ null یعنی فقط 📢 نام کانال
   - id: "quarantine"
     chat: "@my_quarantine"
     enabled: true

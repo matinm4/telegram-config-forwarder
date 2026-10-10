@@ -71,6 +71,7 @@ class Destination(BaseModel):
     message_template: str = "default"
     quarantine: bool = False
     append_username: bool = True
+    footer: Optional[str] = None
     rules: list[FilterRule] = Field(default_factory=list)
 
 

@@ -38,7 +38,9 @@ def build_message(config: ExtractedConfig, location: Location,
     latency = (f" ({result.latency_ms} میلی‌ثانیه)"
                if result.latency_ms is not None else "")
     username_block = ""
-    if destination.append_username:
+    if destination.footer:
+        username_block = f"\n\n{destination.footer}"
+    elif destination.append_username:
         username_block = f"\n📢 {destination.chat}"
     body = (template or get_template(destination.message_template)).format(
         protocol=config.protocol,

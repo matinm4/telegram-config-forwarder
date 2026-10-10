@@ -36,21 +36,49 @@ destinations:
     enabled: true
     sender: "auto"          # bot_api | telethon | auto
     quarantine: false
+    footer: |-
+      🔗 @ApexConfigVpn 🚀 به جمع کاربران کانال ما بپیوندید!
+      هر روز جدیدترین کانفیگ‌های رایگان، پرسرعت و تست‌شده منتشر می‌شود.
+      💎 بدون هزینه
+      ⚡️ سرعت بالا
+      🔄 بروزرسانی مداوم
+      📌 عضویت در کانال = دسترسی همیشگی به جدیدترین کانفیگ‌ها
   - id: "quantum"
     chat: "@QuantumConfigX"
     enabled: true
     sender: "auto"
     quarantine: false
+    footer: |-
+      🔗 @QuantumConfigX 🚀 به جمع کاربران کانال ما بپیوندید!
+      هر روز جدیدترین کانفیگ‌های رایگان، پرسرعت و تست‌شده منتشر می‌شود.
+      💎 بدون هزینه
+      ⚡️ سرعت بالا
+      🔄 بروزرسانی مداوم
+      📌 عضویت در کانال = دسترسی همیشگی به جدیدترین کانفیگ‌ها
   - id: "irannet"
     chat: "@irannetvpn"
     enabled: true
     sender: "auto"
     quarantine: false
+    footer: |-
+      🔗 @irannetvpn 🌐 به خانواده بزرگ ما بپیوندید!
+      هر روز تازه‌ترین کانفیگ‌های رایگان و پرسرعت اینجاست.
+      💎 کاملاً رایگان
+      ⚡️ اتصال پایدار و سریع
+      🔄 آپدیت روزانه
+      📌 با عضویت در کانال، همیشه به‌روز بمانید
   - id: "hyper"
     chat: "@HyperConfigPro"
     enabled: true
     sender: "auto"
     quarantine: false
+    footer: |-
+      🔗 @HyperConfigPro ⚡️ به کانال حرفه‌ای‌ها بپیوندید!
+      گلچین بهترین کانفیگ‌های روز، رایگان و تست‌شده.
+      💎 بدون هزینه
+      🚀 سرعت فوق‌العاده
+      🔄 انتشار مداوم
+      📌 عضو شوید تا هیچ کانفیگی را از دست ندهید
   - id: "quarantine"
     chat: "@my_quarantine1"
     enabled: true
