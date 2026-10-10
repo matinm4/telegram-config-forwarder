@@ -24,6 +24,7 @@ destinations:
     quarantine: true        # حداکثر یک مقصد قرنطینه فعال
 distribution:
   strategy: "round_robin"  # round_robin | broadcast | balanced | source_based | per_destination
+  batch_send: false        # true = ارسال دسته‌ای (چند کانفیگ در یک پیام)؛ false = تک‌تک
 filtering:
   enabled: true
   rules:

@@ -85,7 +85,8 @@ destinations:
     sender: "auto"
     quarantine: true        # کانال قرنطینه واقعی
 distribution:
-  strategy: "broadcast"  # همه کانفیگ‌ها به همه مقصدها (round_robin سهم‌بندی می‌کند)
+  strategy: "round_robin"  # چرخشی: هر کانفیگ فقط به یک کانال می‌رود و بین ۴ کانال می‌چرخد (بدون تکرار)
+  batch_send: true         # دسته‌ای: همه کانفیگ‌های هر پست در یک/چند پیام جمع‌بندی‌شده می‌روند
 filtering:
   enabled: true
   rules:

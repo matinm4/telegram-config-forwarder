@@ -29,6 +29,7 @@ class Schedule(StrictModel):
 
 class Distribution(StrictModel):
     strategy: str = "round_robin"
+    batch_send: bool = False
 
 
 class Filtering(StrictModel):

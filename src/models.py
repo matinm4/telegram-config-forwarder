@@ -63,6 +63,11 @@ class TestResult(BaseModel):
     error_class: Optional[str] = None
 
 
+class Distribution(BaseModel):
+    strategy: Strategy = "round_robin"
+    batch_send: bool = False
+
+
 class Destination(BaseModel):
     id: str
     chat: str

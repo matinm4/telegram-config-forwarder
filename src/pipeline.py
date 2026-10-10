@@ -16,7 +16,7 @@ from src.distribution.distributor import Distributor
 from src.extraction.link_finder import find_links
 from src.extraction.normalizer import build_record
 from src.filtering.cleaner import Cleaner
-from src.formatting.message import build_message
+from src.formatting.message import build_message, split_batches
 from src.models import Location, RunRecord, TestResult
 from src.persistence.state_store import StateStore
 from src.providers.base import (SendResult, SourceAccessError,
@@ -62,6 +62,7 @@ async def run_once(config: AppConfig,
     quarantine_targets = [d for d in destinations if d.quarantine]
 
     sem = asyncio.Semaphore(config.concurrency.source_limit)
+    batch_targets = bool(getattr(config.distribution, "batch_send", False))
 
     async def _guarded(source):
         async with sem:
@@ -70,8 +71,23 @@ async def run_once(config: AppConfig,
                                      tester, locator, cleaner, distributor,
                                      summary)
 
-    await asyncio.gather(*(_guarded(s) for s in config.sources
-                           if s.enabled))
+    if batch_targets:
+        # حالت دسته‌ای: اول همه منابع را جمع کن (بدون ارسال)، بعد یکجا
+        # بین مقصدها تقسیم و ارسال کن — سهم هر کانال یک پیام دسته‌ای.
+        collected: list = []
+        collected_locations: list = []
+        await asyncio.gather(*(_collect_source(
+            config, s, store, providers, tester, locator, cleaner,
+            quarantine_targets, senders,
+            collected, collected_locations, summary)
+            for s in config.sources if s.enabled))
+        await _deliver_collected(config, collected, collected_locations,
+                                 distributor, targets,
+                                 quarantine_targets, store, senders,
+                                 summary)
+    else:
+        await asyncio.gather(*(_guarded(s) for s in config.sources
+                               if s.enabled))
     store.state.distribution_cursor = distributor.cursor
     store.state.distribution_counters = dict(distributor._counters)
     store.append_run(RunRecord(
@@ -142,6 +158,131 @@ async def _run_source(config: AppConfig, source, store: StateStore,
     store.set_last_id(source.id, max_seen)
 
 
+async def _collect_source(config: AppConfig, source, store: StateStore,
+                          providers, tester, locator, cleaner,
+                          quarantine_targets, senders,
+                          collected: list, collected_locations: list,
+                          summary: dict) -> None:
+    """فاز جمع‌آوری حالت دسته‌ای: فقط جمع کن، ارسال نکن."""
+    key = f"source:{source.id}"
+    fails = store.state.consecutive_failures.get(key, 0)
+    since_id = store.get_last_id(source.id)
+    posts: list = []
+    last_error: Optional[str] = None
+    for provider in _provider_order(source, fails, config, providers):
+        try:
+            posts = await provider.fetch_new_posts(source, since_id)
+            store.state.consecutive_failures[key] = 0
+            last_error = None
+            break
+        except SourceAccessError:
+            last_error = "access"
+            break
+        except SourceFetchError:
+            last_error = "fetch"
+            continue
+    if last_error:
+        log.warning("منبع %s رد شد (%s).", source.id, last_error)
+        summary["errors"].append(f"{source.id}: {last_error}")
+        fails = store.state.consecutive_failures.get(key, 0) + 1
+        store.state.consecutive_failures[key] = fails
+        return
+    summary["fetched_posts"] += len(posts)
+    max_seen = since_id
+    for post in posts:
+        max_seen = max(max_seen, post.id)
+        try:
+            await _collect_post(config, post, source.id, store,
+                                tester, locator, cleaner,
+                                quarantine_targets, senders,
+                                collected, collected_locations, summary)
+        except Exception:  # noqa: BLE001 - isolate per-item failures
+            log.warning("پردازش پست %s ناموفق بود؛ ادامه.", post.id)
+            summary["failed"] += 1
+    store.set_last_id(source.id, max_seen)
+
+
+async def _collect_post(config: AppConfig, post, source_id: str,
+                        store: StateStore, tester, locator, cleaner,
+                        quarantine_targets, senders,
+                        collected: list, collected_locations: list,
+                        summary: dict) -> None:
+    text = post.text or ""
+    if cleaner is not None:
+        text = cleaner.clean(text, scope="text")
+    for raw in find_links(text):
+        record = build_record(raw, source_id, post.id)
+        if not record.is_valid:
+            summary["failed"] += 1
+            continue
+        summary["extracted"] += 1
+        if store.is_published(record.exact_hash):
+            summary["skipped_duplicates"] += 1
+            continue
+        location = (locator.locate(record) if locator
+                    else Location(
+                        display=config.location.fallback_display))
+        result = (await tester.test(record) if tester
+                  else TestResult(status="skipped"))
+        if result.status != "skipped":
+            summary["tested"] += 1
+        if result.status in ("failed", "timeout"):
+            # ناموفق‌های تست به قرنطینه (تک‌تک) می‌روند.
+            await _deliver_single(config, record, location, result,
+                                  quarantine_targets, store, senders,
+                                  summary)
+            continue
+        collected.append(record)
+        collected_locations.append(location)
+
+
+async def _deliver_collected(config: AppConfig, records: list,
+                             locations: list, distributor,
+                             targets, quarantine_targets,
+                             store: StateStore, senders,
+                             summary: dict) -> None:
+    """فاز ارسال حالت دسته‌ای: تقسیم چرخشی همه کانفیگ‌ها بین مقصدها."""
+    if not records:
+        return
+    # هر کانفیگ فقط به یک مقصد (چرخشی) — بدون تکرار بین کانال‌ها.
+    groups: dict[str, list] = {}
+    order: list[str] = []
+    loc_by_hash = {r.exact_hash: loc.display
+                   for r, loc in zip(records, locations)}
+    for record in records:
+        dests = distributor.select(targets, record.source_channel)
+        for dest in dests:
+            if dest.id not in groups:
+                groups[dest.id] = []
+                order.append(dest.id)
+            groups[dest.id].append(record)
+    dest_by_id = {d.id: d for d in targets}
+    for dest_id in order:
+        destination = dest_by_id[dest_id]
+        group = groups[dest_id]
+        displays = {loc_by_hash.get(r.exact_hash, "") for r in group}
+        display = (next(iter(displays)) if len(displays) == 1
+                   else config.location.fallback_display)
+        batches = split_batches([r.raw for r in group], display,
+                                destination)
+        if destination.rules:
+            cleaner = Cleaner(destination.rules)
+            batches = [cleaner.clean(b, scope="text") for b in batches]
+        ok = True
+        for body in batches:
+            send_res = await _send_with_fallback(config, destination,
+                                                 body, senders, store)
+            if send_res.ok:
+                summary["sent"] += len(group)
+            else:
+                summary["failed"] += len(group)
+                ok = False
+        if ok:
+            for r in group:
+                store.mark_published(r.exact_hash)
+        # ارسال ناموفق: هش ثبت نمی‌شود تا در repost بعدی دوباره تلاش شود.
+
+
 async def _process_post(config: AppConfig, post, source_id: str,
                         targets, quarantine_targets, store: StateStore,
                         senders, tester, locator, cleaner,
@@ -174,22 +315,29 @@ async def _process_post(config: AppConfig, post, source_id: str,
                 continue
         else:
             item_targets = distributor.select(targets, source_id)
-        delivered = False
-        for destination in item_targets:
-            body = build_message(record, location, result, destination)
-            if destination.rules:
-                body = Cleaner(destination.rules).clean(body, scope="text")
-            send_res = await _send_with_fallback(config, destination,
-                                                 body, senders, store)
-            if send_res.ok:
-                summary["sent"] += 1
-                delivered = True
-            else:
-                summary["failed"] += 1
-        if delivered:
-            store.mark_published(record.exact_hash)
-        # ارسال ناموفق: هش ثبت نمی‌شود تا در ظهور بعدی همان کانفیگ
-        # (پست‌های تکرارشونده منبع) دوباره تلاش شود.
+        await _deliver_single(config, record, location, result,
+                              item_targets, store, senders, summary)
+
+
+async def _deliver_single(config: AppConfig, record, location, result,
+                          item_targets, store: StateStore,
+                          senders, summary: dict) -> None:
+    delivered = False
+    for destination in item_targets:
+        body = build_message(record, location, result, destination)
+        if destination.rules:
+            body = Cleaner(destination.rules).clean(body, scope="text")
+        send_res = await _send_with_fallback(config, destination,
+                                             body, senders, store)
+        if send_res.ok:
+            summary["sent"] += 1
+            delivered = True
+        else:
+            summary["failed"] += 1
+    if delivered:
+        store.mark_published(record.exact_hash)
+    # ارسال ناموفق: هش ثبت نمی‌شود تا در ظهور بعدی همان کانفیگ
+    # (پست‌های تکرارشونده منبع) دوباره تلاش شود.
 
 
 def _sender_order(destination, fails: int, config: AppConfig,
