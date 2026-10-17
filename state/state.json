@@ -4,9 +4,9 @@
     "src1": 506,
     "src_proxymmdfreak": 0,
     "src_toxicvid": 9798,
-    "src_configshub": 2185038,
-    "src_filembad": 173176,
-    "src_v2raysvmess": 74796
+    "src_configshub": 2185484,
+    "src_filembad": 173185,
+    "src_v2raysvmess": 74885
   },
   "published_hashes": [
     "7c8629f4b9e4cabbd655dc58e78086efb4719f49fb9f4ab3a343ed79370b74b0",
@@ -5230,7 +5230,7 @@
     "0bf171097452969d2a61f302ba4175de434019fab79dc4d489894edca3edc8bf",
     "ba54cdb3f939e8e46dd0edd4d9ecb0ee0b2f4baeeae0c10cce8154b3e55c9ba1"
   ],
-  "distribution_cursor": 569,
+  "distribution_cursor": 1246,
   "distribution_counters": {},
   "consecutive_failures": {
     "source:src1": 0,
@@ -6084,6 +6084,16 @@
       "tested": 0,
       "failed": 7,
       "sent": 5263,
+      "errors": []
+    },
+    {
+      "started_at": "2026-10-17T07:29:45.624070+00:00",
+      "finished_at": "2026-10-17T07:35:18.675702+00:00",
+      "fetched_posts": 197,
+      "extracted": 1264,
+      "tested": 0,
+      "failed": 5622,
+      "sent": 22118,
       "errors": []
     }
   ]
