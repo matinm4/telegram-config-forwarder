@@ -5,7 +5,7 @@
     "src_proxymmdfreak": 0,
     "src_toxicvid": 9813,
     "src_configshub": 2190832,
-    "src_filembad": 173546,
+    "src_filembad": 173547,
     "src_v2raysvmess": 75785
   },
   "published_hashes": [
@@ -7723,7 +7723,7 @@
     "47aeb288438f756e8d6b911f0ee7ae867d8275537eea5680cf14e3e9e71eb781",
     "d44fedc15c3da67f9f8b28978af95ce5db7dcb51b4177d1eca878b7ccd6e663e"
   ],
-  "distribution_cursor": 49,
+  "distribution_cursor": 0,
   "distribution_counters": {},
   "consecutive_failures": {
     "source:src1": 0,
@@ -8767,6 +8767,16 @@
       "tested": 0,
       "failed": 0,
       "sent": 49,
+      "errors": []
+    },
+    {
+      "started_at": "2026-10-21T03:10:53.566660+00:00",
+      "finished_at": "2026-10-21T03:10:56.543177+00:00",
+      "fetched_posts": 1,
+      "extracted": 1,
+      "tested": 0,
+      "failed": 0,
+      "sent": 0,
       "errors": []
     }
   ]
