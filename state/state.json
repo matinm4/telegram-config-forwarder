@@ -4,9 +4,9 @@
     "src1": 506,
     "src_proxymmdfreak": 0,
     "src_toxicvid": 9837,
-    "src_configshub": 2198617,
-    "src_filembad": 174320,
-    "src_v2raysvmess": 78184
+    "src_configshub": 2199025,
+    "src_filembad": 174344,
+    "src_v2raysvmess": 78259
   },
   "published_hashes": [
     "7c8629f4b9e4cabbd655dc58e78086efb4719f49fb9f4ab3a343ed79370b74b0",
@@ -10183,17 +10183,17 @@
     "afa08e02a0ea6e41bcb092bbff44bf005c2c9cce7ad13fee9b55d4cf66df2625",
     "3ea66d389e57b59face5e7c38ce57ba37442fb2479b6bcc267110a24fcf8ffdf"
   ],
-  "distribution_cursor": 1573,
+  "distribution_cursor": 1041,
   "distribution_counters": {},
   "consecutive_failures": {
     "source:src1": 0,
     "sender:quarantine": 344,
-    "sender:main": 1,
+    "sender:main": 0,
     "source:src_proxymmdfreak": 0,
     "source:src_configshub": 0,
     "source:src_toxicvid": 0,
     "source:src_v2raysvmess": 0,
-    "sender:quantum": 1,
+    "sender:quantum": 0,
     "source:src_filembad": 0,
     "sender:irannet": 0,
     "sender:hyper": 0
@@ -11527,6 +11527,16 @@
       "tested": 0,
       "failed": 11420,
       "sent": 33033,
+      "errors": []
+    },
+    {
+      "started_at": "2026-10-28T03:50:41.715156+00:00",
+      "finished_at": "2026-10-28T03:55:36.408911+00:00",
+      "fetched_posts": 198,
+      "extracted": 1058,
+      "tested": 0,
+      "failed": 3944,
+      "sent": 16396,
       "errors": []
     }
   ]
